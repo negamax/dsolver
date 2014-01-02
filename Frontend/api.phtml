@@ -1,0 +1,39 @@
+<?php
+class DSolverAPI
+{
+	const SUGGEST_API = "Path to SolveDS Endpoint";
+	
+	public static function suggestWords( $length, $key )
+	{
+		try
+		{
+			$url = self::SUGGEST_API;
+			$url .= "?wordlength=" . $length;
+			$url .= "&key=" . $key;
+		
+			$response = file_get_contents( $url );
+			
+			return $response;
+		}
+		catch( Exception  $e )
+		{
+			return "Unknown error. Please contact support";
+		}
+	}
+}
+
+//TODO: should be moved to a common util, should be logged
+function errorHandler($number, $string, $file = 'Unknown', $line = 0, $context = array())
+{
+    if (($number == E_NOTICE) || ($number == E_STRICT))
+        return false;
+
+    if (!error_reporting())
+        return false;
+
+    throw new Exception($string, $number);
+
+    return true;
+}
+
+set_error_handler('errorHandler');
